@@ -1,11 +1,24 @@
 <?php
 
 /**
-* base class for handling objects in MongoDB
+* base class for handling data (ie: a blob)
 * 
-* sample usage:
+* sample usage for MongoDB:
+* 
 * class User extends Mongo_Object_Base
 * {
+*   public static $name = new Object_Type_String();
+*   
+*   private $coll;
+*   public function __construct(array $blob, Mongo_Collection $coll)
+*   {
+*       $this->coll = $coll;
+*       parent::__construct($blob);
+*   }
+*   public function save()
+*   {
+*       $this->coll->save($this->_data);
+*   }
 * }
 * 
 * $mongo = new Mongo();
@@ -14,94 +27,71 @@
 * $rawBlob = $mongoColl->findOne($my_query_params);
 * $user = new User($rawBlob);
 * //do stuff with user
-* $user->save($mongoColl);
-* 
-* TODO:
-* handle more than the single depth arrays (ie: with pathing)
-* handle data structuring and validation (ie: with pathing
+* var_dump($user->name);
+* $user->save();
 */
-abstract class Mongo_Object_Base
+abstract class Object_Base
 {
-	private $_id;
+    protected $_expected_properties = array();
+    
 	protected $_data;
+	
+	protected $_name;
 	
 	public function __construct(array $blob)
 	{
+	    $refl = new ReflectionClass($this);
+	    
+	    $prop_names = $refl->getStaticProperties();
+	    
+	    $this->_name = $this->name();
+	    
+	    foreach($prop_names as $prop_name)
+	    {
+	        $prop_val = $refl->getStaticPropertyValue($prop_name);
+	        if(!($prop_val instanceof Object_Type_Base))
+	        {
+	            throw new Mongo_Object_Exception("in {$this->_name}, {$prop_name} is not a subclass of Object_Type_Base");
+	        }
+	        
+	        $this->_expected_properties[$prop_name] = $prop_val;
+	    }
+		
+		$this->matchProperties($this->_expected_properties, $this->_data);
+		
 		$this->_data = $blob;
-		
-		if(!isset($this->_data['_id'])) throw new Mongo_Object_Exception('no "_id" element in blob passed to Mongo_Object_Base');
-		
-		//set the ID
-		$this->_id = $this->_data['_id'];
-		unset($this->_data['_id']);
 	}
 	
-	/**
-	* get a value in the object at $path
-	*
-	* @param Mongo_Object_Path $path: the path from which to get the value
-	* @param mixed $returnIfMissing: the value to return if $path doesn't exist
-	* @return mixed: the value at $path, if it exists. otherwise $returnIfMissing if $path doesn't exist
-	*/
-	public function get(Mongo_Object_Path $path, $returnIfMissing = false)
+	public function matchProperties(array $expected, array $blob)
 	{
-		$path_elts = $path->get();
-		$level = $this->_data;
-		foreach($path_elts as $path_elt)
-		{
-			if(is_array($level) && array_key_exists($path_elt, $level))
-			{
-				$level = $level[$path_elt];
-			}
-			else
-			{
-				return $returnIfMissing;
-			}
-		}
-		
-		return $level;
+	    foreach($expected as $name => $type)
+	    {
+	        if(!isset($blob[$name]))
+	        {
+	            throw new Mongo_Object_Exception("data given to {$this->_name} has no key {$name}");
+	        }
+	        
+	        $validated = $type->validate($blob[$name]);
+	        if($validated === false)
+	        {
+	            $typename = $type->name();
+	            throw new Mongo_Object_Exception("key {$name} in blob given to {$this->_name} is not a {$typename}");
+	        }
+	    }
 	}
 	
-	/**
-	* set $val at $path
-	*
-	* @param Mongo_Object_Path $path: the path at which to set $val
-	* @param mixed $val: the value to set at $path
-	* @return void
-	*/
-	public function set(Mongo_Object_Path $path, $val)
+	public function & __get($s)
 	{
-		$path_elts = $path->get();
-		$level = &$this->_data;
-		foreach($path_elts as $path_elt)
-		{
-			if((is_array($level) && !array_key_exists($path_elt, $level)) || !is_array($level))
-			{
-				$level[$path_elt] = array();
-			}
-			$level = &$level[$path_elt];
-		}
-		$level = $val;
+	    if(!isset($this->_expected_properties[$s]))
+	    {
+	        throw new Mongo_Object_Exception("attempt to get property [$s] which does not exist");
+	    }
+	    return $this->_data[$s];
 	}
-		
-	/**
-	* set a value at $path iff that value already existed and was equal to $testVal.
-	* note that this function is NOT atomic on the server.
-	* 
-	* @param Mongo_Object_Path $path: the path at which to testAndSet
-	* @param mixed $testVal: the value to test
-	* @param mixed $setVal: the value to set
-	* @return bool: true if $setVal was set at $path, else false
-	*/
-	public function testAndSet(Mongo_Object_Path $path, $testVal, $setVal)
-	{
-		$actualVal = $this->get($path);
-		if($actualVal == $testVal) $this->set($path, $setVal);
-	}
-		
-	public function getID()
-	{
-		return $this->_id;
+	
+	public function name()
+    {
+	    return get_class($this);
 	}
 	
 	public function __toString()
@@ -116,12 +106,5 @@ abstract class Mongo_Object_Base
 		return "id = $this->_id\n".implode("\n", $arr)."\n";
 	}
 	
-	public function save(MongoCollection $c)
-	{
-		$this->_data['_id'] = $this->_id;
-		
-		$c->save($this->_data);
-		
-		unset($this->_data['_id']);
-	}
+	abstract public function save();
 }
