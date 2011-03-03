@@ -1,6 +1,6 @@
 <?php
 
-class Object_Type_List extends Object_Type_Base
+class Basis_Type_List extends Basis_Type_Base
 {
     public function validate($data)
     {
@@ -10,5 +10,6 @@ class Object_Type_List extends Object_Type_Base
         {
             if(!is_int($key)) return false;
         }
+		return true;
     }
 }

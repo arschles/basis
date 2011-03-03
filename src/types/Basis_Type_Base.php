@@ -1,13 +1,14 @@
 <?php
 
-abstract class Object_Type_Base
+abstract class Basis_Type_Base
 {
     private $val;
     private $name;
     
-    public function __construct()
+    public function __construct($val)
     {
         $this->name = get_class($this);
+		$this->set($val);
     }
     
     public function set($val)
@@ -16,7 +17,7 @@ abstract class Object_Type_Base
         $valid = $this->validate($val);
         if($valid === false)
         {
-            throw new Mongo_Object_Exception("data [$val] passed into [{$name}] was invalid");
+            throw new Basis_Exception("data [$val] passed into [{$name}] was invalid");
         }
         
         $this->val = $val;
@@ -31,6 +32,11 @@ abstract class Object_Type_Base
     {
         return $this->name;
     }
+	
+	public function __toString()
+	{
+		return json_encode($this->get());
+	}
     
     /**
     * validate data

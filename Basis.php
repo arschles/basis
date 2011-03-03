@@ -4,13 +4,18 @@ $src = dirname(__FILE__).'/src/';
 
 //TODO: autoloader
 
-require($src.'Exception.php');
-require($src.'Object_Base.php');
+require_once $src.'Exception.php';
+require_once $src.'Basis_Base.php';
 
-require($src.'types/Object_Type_Base.php');
-require($src.'types/Object_Type_Dict.php');
-require($src.'types/Object_Type_Int.php');
-require($src.'types/Object_Type_List.php');
-require($src.'types/Object_Type_String.php');
-require($src.'types/Object_Type_TypedList.php');
-require($src.'types/Object_Type_TypedDict.php');
+require_once $src.'types/Basis_Type_Base.php';
+require_once $src.'types/Basis_Type_Dict.php';
+require_once $src.'types/Basis_Type_Float.php';
+require_once $src.'types/Basis_Type_Int.php';
+require_once $src.'types/Basis_Type_List.php';
+require_once $src.'types/Basis_Type_Ranged_Int.php';
+require_once $src.'types/Basis_Type_String.php';
+require_once $src.'types/Basis_Type_Timestamp.php';
+require_once $src.'types/Basis_Type_TypedDict.php';
+require_once $src.'types/Basis_Type_TypedList.php';
+require_once $src.'types/Basis_Type_Unsigned_Float.php';
+require_once $src.'types/Basis_Type_Unsigned_Int.php';

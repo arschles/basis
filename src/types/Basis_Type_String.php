@@ -1,6 +1,6 @@
 <?php
 
-class Object_Type_String extends Object_Type_Base
+class Basis_Type_String extends Basis_Type_Base
 {
     public function validate($data)
     {

@@ -1,3 +1,3 @@
 <?php
 
-class Mongo_Object_Exception extends Exception {}
+class Basis_Exception extends Exception {}

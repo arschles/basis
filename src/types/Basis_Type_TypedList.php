@@ -1,6 +1,6 @@
 <?php
 
-class Object_Type_TypedList extends Object_Type_List
+class Basis_Type_TypedList extends Basis_Type_List
 {
     private $typename;
     public function __construct($typename)
@@ -11,13 +11,13 @@ class Object_Type_TypedList extends Object_Type_List
     
     public function validate($data)
     {
-        if(!is_array($data)) return false;
-        
+		if(parent::validate($data) == false) return false;
+		
         foreach($data as $key=>$val)
         {
             if(get_class($val) != $this->typename) return false;
         }
-        
-        parent::validate($data);
+		
+		return true;
     }
 }

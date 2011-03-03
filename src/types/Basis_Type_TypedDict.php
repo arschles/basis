@@ -1,6 +1,6 @@
 <?php
 
-class Object_Type_TypedDict extends Object_Type_Dict
+class Basis_Type_TypedDict extends Basis_Type_Dict
 {
     private $typename;
     public function __construct($typename)
@@ -11,13 +11,14 @@ class Object_Type_TypedDict extends Object_Type_Dict
     
     public function validate($data)
     {
-        if(!is_array($data)) return false;
+		if(!parent::validate($data)) return false;
+		
         
         foreach($data as $key=>$val)
         {
             if(get_class($val) != $this->typename) return false;
         }
         
-        parent::validate($data);
+        return true;
     }
 }
