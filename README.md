@@ -20,7 +20,7 @@ Here are Basis's goals:
 Getting Started
 ===============
 
-- wget https://download.github.com/arschles-basis-90e8d03.tar.gz
+- [download](https://github.com/arschles/basis/tarball/master) Basis
 - tar xvzf arschles-basis-90e8d03.tar.gz
 - cp arschles-basis-90e8d03 $YOUR-PHP-PROJECT/basis
 
