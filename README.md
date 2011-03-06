@@ -20,7 +20,7 @@ Here are Basis's goals:
 Getting Started
 ===============
 
-All you need to do to get started is [download](https://github.com/arschles/basis/tarball/master) Basis, extract it, and put it somewhere where you can require_once('basis/Basis.php') in PHP.
+All you need to do to get started is [download](https://github.com/arschles/basis/tarball/0.1) Basis, extract it, and put it somewhere where you can require_once('basis/Basis.php') in PHP.
 
 Example
 ===============
