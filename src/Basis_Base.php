@@ -1,10 +1,11 @@
 <?php
 
 /**
-* base class for handling data
+* Base class to be subclassed to help you provide structure to unstructured blobs.
 * 
-* TODO: put sample usage here
+* see README.md for example usage
 */
+
 abstract class Basis_Base
 {
     private $_data = array();
