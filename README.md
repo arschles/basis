@@ -20,9 +20,7 @@ Here are Basis's goals:
 Getting Started
 ===============
 
-- [download](https://github.com/arschles/basis/tarball/master) Basis
-- tar xvzf arschles-basis-90e8d03.tar.gz
-- cp arschles-basis-90e8d03 $YOUR-PHP-PROJECT/basis
+All you need to do to get started is [download](https://github.com/arschles/basis/tarball/master) Basis, extract it, and put it somewhere where you can require_once('basis/Basis.php') in PHP.
 
 Example
 ===============
