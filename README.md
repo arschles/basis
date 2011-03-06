@@ -25,6 +25,7 @@ All you need to do to get started is [download](https://github.com/arschles/basi
 Example
 ===============
 
+    <?php
     require_once 'basis/Basis.php';
     class User extends Basis_Base
     {
