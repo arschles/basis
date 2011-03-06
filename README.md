@@ -7,6 +7,11 @@ I constantly notice a common problem in PHP apps. When you work with data from a
 
 For example, I often find bugs that started because some code expects some key in a memcache blob to be a list, when it was stored as a dictionary, with keys as strings. Usually, these sorts of bugs are tedious and time consuming to find in even medium sized codebases.
 
+Basis is inspired by two Ruby projects that are solving a similar problem for Ruby apps:
+
+- https://github.com/newtoy/toystore (good explanatory article (here)[http://railstips.org/blog/archives/2011/01/27/data-modeling-in-performant-systems/])
+- https://github.com/wycats/moneta
+
 Goals
 ============
 
