@@ -1,7 +1,8 @@
 <?php
+require_once "Basis_Type_Base.php";
 
 class Basis_Type_Dict extends Basis_Type_Base
-{
+{    
     public function validate($data)
     {
         if(!is_array($data)) return false;
@@ -14,17 +15,17 @@ class Basis_Type_Dict extends Basis_Type_Base
 		return true;
     }
 
-	public function get($key)
+	public function getValueForKey($key)
 	{
-		$dict = parent::get();
+	    $dict = $this->getNoThrow(array());
 		if(!isset($dict[$key])) throw new Basis_Exception("no such key $key exists");
 		return $dict[$key];
 	}
 	
-	public function set($key, $val)
+	public function setValueForKey($k, $v)
 	{
-		$dict = parent::get();
-		$dict[$key] = $val;
-		parent::set($dict);
+		$dict = $this->getNoThrow(array());
+		$dict[$k] = $v;
+		$this->set($dict);
 	}
 }

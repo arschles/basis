@@ -1,4 +1,5 @@
 <?php
+require_once "Basis_Type_Base.php";
 
 class Basis_Type_Int extends Basis_Type_Base
 {
@@ -9,8 +10,9 @@ class Basis_Type_Int extends Basis_Type_Base
 
 	public function increment()
 	{
-		$this->set($this->get() + 1);
-		return $this->get();
+	    $inc = $this->get() + 1;
+		$this->set($inc);
+		return $inc;
 	}
 	
 	public function getAndIncrement()
@@ -22,7 +24,9 @@ class Basis_Type_Int extends Basis_Type_Base
 	
 	public function decrement()
 	{
-		$this->set($this->get() - 1);
+	    $dec = $this->get() - 1;
+		$this->set($dec);
+		return $dec;
 	}
 	
 	public function getAndDecrement()

@@ -1,4 +1,5 @@
 <?php
+require_once "Basis_Type_Int.php";
 
 class Basis_Type_Ranged_Int extends Basis_Type_Int
 {
@@ -8,33 +9,19 @@ class Basis_Type_Ranged_Int extends Basis_Type_Int
 	
 	private $min;
 	private $max;
-	private $exception = false;
 	
     public function __construct($min, $max, $start)
 	{
-		parent::__construct();
 		$this->min = $min;
 		$this->max = $max;
-		$this->exception = $exception;
 		
+		parent::__construct();
 		$this->set($start);
-	}
-	
-	public function increment()
-	{
-		$this->set($this->get() + 1);
-	}
-	
-	public function getAndIncrement()
-	{
-		$val = $this->get();
-		$this->increment();
-		return $val;
 	}
 	
 	public function validate($val)
 	{
-		return parent::validate($val) && ($this->rangeStatus($val) != self::IN_RANGE);
+		return parent::validate($val) && ($this->rangeStatus($val) == self::IN_RANGE);
 	}
 	
 	public function rangeStatus($val)
@@ -46,8 +33,8 @@ class Basis_Type_Ranged_Int extends Basis_Type_Int
 		return self::IN_RANGE;
 	}
 	
-	public function set($val)
-	{		
-		parent::set($val);
+	public function name()
+	{
+	    return 'Basis_Type_Ranged_Int (min = '.$this->min.', max = '.$this->max.', inclusive)';
 	}
 }
